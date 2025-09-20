@@ -1,87 +1,72 @@
+#include <POP32.h>
+
 #define CH1 3   // สไลด์ ซ้าย-ขวา (X)
 #define CH2 5   // เดินหน้า-ถอยหลัง (Y)
 #define CH4 4   // หมุนตัว L R
 #define CH6 6   // Speed knob
-
-#define M1_IN1 1    //หน้า-ซ้าย (Front Left)
-#define M1_IN2 2    //หน้า-ซ้าย (Front Left)
-#define M2_IN1 7    //หน้า-ขวา (Front Right)
-#define M2_IN2 8    //หน้า-ขวา (Front Right)
-#define M3_IN1 9    //หลัง-ซ้าย (Rear Left)
-#define M3_IN2 10    //หลัง-ซ้าย (Rear Left)
-#define M4_IN1 11    //หลัง-ขวา (Rear Right)
-#define M4_IN2 12    //หลัง-ขวา (Rear Right)
 
 int ch1Value; 
 int ch2Value;
 int ch4Value;
 int ch6Value;
 
-int mapSpeed(int speed) {
-  return map(constrain(speed, 0, 100), 0, 100, 0, 255);
-}
+// int mapSpeed(int speed) {
+//   return map(constrain(speed, 0, 100), 0, 100, 0, 255);
+// }
 
-void setMotor(int in1, int in2, int speed) {
-  int pwm = mapSpeed(abs(speed));
-  if (speed > 0) {
-    analogWrite(in1, pwm);
-    analogWrite(in2, 0);
-  } else if (speed < 0) {
-    analogWrite(in1, 0);
-    analogWrite(in2, pwm);
-  } else {
-    analogWrite(in1, 0);
-    analogWrite(in2, 0);
-  }
+void moveForward(int speed) { // เดินหน้า 
+  speed = constrain(speed, 0, 100);
+  motor(1, speed);
+  motor(2, speed);
+  motor(3, speed);
+  motor(4, speed);
 }
-
-void moveForward(int speed) { // เดินหน้า
-  setMotor(M1_IN1, M1_IN2, speed);
-  setMotor(M2_IN1, M2_IN2, speed);
-  setMotor(M3_IN1, M3_IN2, speed);
-  setMotor(M4_IN1, M4_IN2, speed);
-}
-
 void moveBackward(int speed) { // ถอยหลัง
-  setMotor(M1_IN1, M1_IN2, -speed);
-  setMotor(M2_IN1, M2_IN2, -speed);
-  setMotor(M3_IN1, M3_IN2, -speed);
-  setMotor(M4_IN1, M4_IN2, -speed);
+  speed = constrain(speed, 0, 100);
+  motor(1, -speed);
+  motor(2, -speed);
+  motor(3, -speed);
+  motor(4, -speed);
 }
 
 void moveLeft(int speed) { // สไลด์ซ้าย
-  setMotor(M1_IN1, M1_IN2, -speed);
-  setMotor(M2_IN1, M2_IN2, speed);
-  setMotor(M3_IN1, M3_IN2, speed);
-  setMotor(M4_IN1, M4_IN2, -speed);
+  speed = constrain(speed, 0, 100);
+  motor(1, -speed);
+  motor(2, speed);
+  motor(3, speed);
+  motor(4, -speed);
 }
 
 void moveRight(int speed) { // สไลด์ขวา
-  setMotor(M1_IN1, M1_IN2, speed);
-  setMotor(M2_IN1, M2_IN2, -speed);
-  setMotor(M3_IN1, M3_IN2, -speed);
-  setMotor(M4_IN1, M4_IN2, speed);
+  speed = constrain(speed, 0, 100);
+  motor(1, speed);
+  motor(2, -speed);
+  motor(3, -speed);
+  motor(4, speed);
 }
 
 void moveClockw(int speed) { // หมุนตามเข็ม (ขวา)
-  setMotor(M1_IN1, M1_IN2, speed);
-  setMotor(M2_IN1, M2_IN2, -speed);
-  setMotor(M3_IN1, M3_IN2, speed);
-  setMotor(M4_IN1, M4_IN2, -speed);
+  speed = constrain(speed, 0, 100);
+  motor(1, speed);
+  motor(2, -speed);
+  motor(3, speed);
+  motor(4, -speed);
 }
 
 void moveCClockw(int speed) { // หมุนทวนเข็ม (ซ้าย)
-  setMotor(M1_IN1, M1_IN2, -speed);
-  setMotor(M2_IN1, M2_IN2, speed);
-  setMotor(M3_IN1, M3_IN2, -speed);
-  setMotor(M4_IN1, M4_IN2, speed);
+  speed = constrain(speed, 0, 100);
+  motor(1, -speed);
+  motor(2, speed);
+  motor(3, -speed);
+  motor(4, speed);
 }
 
-void stopMotors() {
-  setMotor(M1_IN1, M1_IN2, 0);
-  setMotor(M2_IN1, M2_IN2, 0);
-  setMotor(M3_IN1, M3_IN2, 0);
-  setMotor(M4_IN1, M4_IN2, 0);
+void stopmotors(int speed) {
+  speed = constrain(speed, 0, 100);
+  motor(1, 0);
+  motor(2, 0);
+  motor(3, 0);
+  motor(4, 0);
 }
 
 int readChannel(int channelInput, int minLimit, int maxLimit, int defaultValue) {
@@ -97,11 +82,6 @@ void setup() {
   pinMode(CH2, INPUT);
   pinMode(CH4, INPUT);
   pinMode(CH6, INPUT);
-
-  pinMode(M1_IN1, OUTPUT); pinMode(M1_IN2, OUTPUT);
-  pinMode(M2_IN1, OUTPUT); pinMode(M2_IN2, OUTPUT);
-  pinMode(M3_IN1, OUTPUT); pinMode(M3_IN2, OUTPUT);
-  pinMode(M4_IN1, OUTPUT); pinMode(M4_IN2, OUTPUT);
 }
 
 void loop() {
