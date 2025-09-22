@@ -1,9 +1,14 @@
 #include <POP32.h>
 
-#define CH1 3   // สไลด์ ซ้าย-ขวา (X)
-#define CH2 5   // เดินหน้า-ถอยหลัง (Y)
-#define CH4 4   // หมุนตัว L R
-#define CH6 6   // Speed knob
+#define CH1 PB10   // สไลด์ ซ้าย-ขวา (X)
+#define CH2 PB3   // เดินหน้า-ถอยหลัง (Y)
+#define CH4 PC14   // หมุนตัว L R
+#define CH5 PA15   // สวิสต์ปั่น
+#define CH6 PB11   // Speed knob
+#define M1 2
+#define M2 4
+#define M3 1
+#define M4 3
 
 int ch1Value; 
 int ch2Value;
@@ -15,58 +20,64 @@ int ch6Value;
 // }
 
 void moveForward(int speed) { // เดินหน้า 
-  speed = constrain(speed, 0, 100);
-  motor(1, speed);
-  motor(2, speed);
-  motor(3, speed);
-  motor(4, speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+  Serial.print(speed);
+  motor(M1, speed);
+  motor(M2, speed);
+  motor(M3, speed);
+  motor(M4, speed);
 }
 void moveBackward(int speed) { // ถอยหลัง
-  speed = constrain(speed, 0, 100);
-  motor(1, -speed);
-  motor(2, -speed);
-  motor(3, -speed);
-  motor(4, -speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+  motor(M1, -speed);
+  motor(M2, -speed);
+  motor(M3, -speed);
+  motor(M4, -speed);
 }
 
 void moveLeft(int speed) { // สไลด์ซ้าย
-  speed = constrain(speed, 0, 100);
-  motor(1, -speed);
-  motor(2, speed);
-  motor(3, speed);
-  motor(4, -speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+  motor(M1, -speed);
+  motor(M2, speed);
+  motor(M3, speed);
+  motor(M4, -speed);
 }
 
 void moveRight(int speed) { // สไลด์ขวา
-  speed = constrain(speed, 0, 100);
-  motor(1, speed);
-  motor(2, -speed);
-  motor(3, -speed);
-  motor(4, speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+  motor(M1, speed);
+  motor(M2, -speed);
+  motor(M3, -speed);
+  motor(M4, speed);
 }
 
 void moveClockw(int speed) { // หมุนตามเข็ม (ขวา)
-  speed = constrain(speed, 0, 100);
-  motor(1, speed);
-  motor(2, -speed);
-  motor(3, speed);
-  motor(4, -speed);
+  speed = abs(constrain(speed, 20, 100));
+  speed = map(speed, 20, 100, 0, 100);
+  motor(M1, speed);
+  motor(M2, -speed);
+  motor(M3, speed);
+  motor(M4, -speed);
 }
 
 void moveCClockw(int speed) { // หมุนทวนเข็ม (ซ้าย)
-  speed = constrain(speed, 0, 100);
-  motor(1, -speed);
-  motor(2, speed);
-  motor(3, -speed);
-  motor(4, speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+  motor(M1, -speed);
+  motor(M2, speed);
+  motor(M3, -speed);
+  motor(M4, speed);
 }
 
-void stopmotors(int speed) {
-  speed = constrain(speed, 0, 100);
-  motor(1, 0);
-  motor(2, 0);
-  motor(3, 0);
-  motor(4, 0);
+void stopmotors() {
+  motor(M1, 0);
+  motor(M2, 0);
+  motor(M3, 0);
+  motor(M4, 0);
 }
 
 int readChannel(int channelInput, int minLimit, int maxLimit, int defaultValue) {
@@ -93,25 +104,23 @@ void loop() {
   // แปลงค่าที่ได้เป็นทิศทาง
   String direction = "Stop";
 
-  if (abs(ch1Value) < 15 && abs(ch2Value) < 15 && abs(ch4Value) < 15 && abs(ch6Value) <= 20){
-    direction = "Stop";
-  } else {
-    if (ch2Value > 20 && abs(ch6Value) >= 20){direction = "Forward"; moveForward(ch6Value);}
-    else if (ch2Value < -20 && abs(ch6Value) >= 20){direction = "Backward"; moveBackward(ch6Value);}
+  if (ch2Value > 20){direction = "Forward"; moveForward(ch2Value);}
+  else if (ch2Value < -20){direction = "Backward"; moveBackward(abs(ch2Value));}
 
-    if (ch1Value > 20 && abs(ch6Value) >= 20){direction = "Strafe Right"; moveRight(ch6Value);}
-    else if (ch1Value < -20 && abs(ch6Value) >= 20){direction = "Strafe Left"; moveLeft(ch6Value);}
+  else if (ch1Value > 20){direction = "Strafe Right"; moveRight(ch1Value);}
+  else if (ch1Value < -20){direction = "Strafe Left"; moveLeft(abs(ch1Value));}
 
-    if (ch4Value > 20 && abs(ch6Value) >= 20){direction = "Rotate Right"; moveClockw(ch6Value);}
-    else if (ch4Value < -20 && abs(ch6Value) >= 20){direction = "Rotate Left"; moveCClockw(ch6Value);}
-  }
+  else if (ch4Value > 20){direction = "Rotate Right"; moveClockw(ch4Value);}
+  else if (ch4Value < -20){direction = "Rotate Left"; moveCClockw(abs(ch4Value));}
+
+  else {direction = "Stop"; stopmotors();}
 
   Serial.print("X: "); Serial.print(ch1Value);
   Serial.print(" | Y: "); Serial.print(ch2Value);
   Serial.print(" | R: "); Serial.print(ch4Value);
   Serial.print(" --> ");
-  Serial.print(direction);
-  Serial.print(" | Speed: "); Serial.println(ch6Value);
+  Serial.println(direction);
+  // Serial.print(" | Speed: "); Serial.println(ch6Value);
 
   delay(100);
 }
