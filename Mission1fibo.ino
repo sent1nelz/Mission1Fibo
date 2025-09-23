@@ -1,7 +1,6 @@
 #define CH1 3   // สไลด์ ซ้าย-ขวา (X)
 #define CH2 5   // เดินหน้า-ถอยหลัง (Y)
 #define CH4 4   // หมุนตัว L R
-#define CH6 6   // Speed knob
 
 #define M1_IN1 1    //หน้า-ซ้าย (Front Left)
 #define M1_IN2 2    //หน้า-ซ้าย (Front Left)
@@ -15,73 +14,122 @@
 int ch1Value; 
 int ch2Value;
 int ch4Value;
-int ch6Value;
-
-int mapSpeed(int speed) {
-  return map(constrain(speed, 0, 100), 0, 100, 0, 255);
-}
-
-void setMotor(int in1, int in2, int speed) {
-  int pwm = mapSpeed(abs(speed));
-  if (speed > 0) {
-    analogWrite(in1, pwm);
-    analogWrite(in2, 0);
-  } else if (speed < 0) {
-    analogWrite(in1, 0);
-    analogWrite(in2, pwm);
-  } else {
-    analogWrite(in1, 0);
-    analogWrite(in2, 0);
-  }
-}
 
 void moveForward(int speed) { // เดินหน้า
-  setMotor(M1_IN1, M1_IN2, speed);
-  setMotor(M2_IN1, M2_IN2, speed);
-  setMotor(M3_IN1, M3_IN2, speed);
-  setMotor(M4_IN1, M4_IN2, speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+
+  analogWrite(M1_IN1, speed);
+  analogWrite(M1_IN2, 0);
+
+  analogWrite(M2_IN1, speed);
+  analogWrite(M2_IN2, 0);
+
+  analogWrite(M3_IN1, speed);
+  analogWrite(M3_IN2, 0);
+
+  analogWrite(M4_IN1, speed);
+  analogWrite(M4_IN2, 0);
 }
 
 void moveBackward(int speed) { // ถอยหลัง
-  setMotor(M1_IN1, M1_IN2, -speed);
-  setMotor(M2_IN1, M2_IN2, -speed);
-  setMotor(M3_IN1, M3_IN2, -speed);
-  setMotor(M4_IN1, M4_IN2, -speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+
+  analogWrite(M1_IN1, 0);
+  analogWrite(M1_IN2, speed);
+
+  analogWrite(M2_IN1, 0);
+  analogWrite(M2_IN2, speed);
+
+  analogWrite(M3_IN1, 0);
+  analogWrite(M3_IN2, speed);
+
+  analogWrite(M4_IN1, 0);
+  analogWrite(M4_IN2, speed);
 }
 
 void moveLeft(int speed) { // สไลด์ซ้าย
-  setMotor(M1_IN1, M1_IN2, -speed);
-  setMotor(M2_IN1, M2_IN2, speed);
-  setMotor(M3_IN1, M3_IN2, speed);
-  setMotor(M4_IN1, M4_IN2, -speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+  
+  analogWrite(M1_IN1, 0);
+  analogWrite(M1_IN2, speed);
+
+  analogWrite(M2_IN1, speed);
+  analogWrite(M2_IN2, 0);
+
+  analogWrite(M3_IN1, speed);
+  analogWrite(M3_IN2, 0);
+
+  analogWrite(M4_IN1, 0);
+  analogWrite(M4_IN2, speed);
 }
 
 void moveRight(int speed) { // สไลด์ขวา
-  setMotor(M1_IN1, M1_IN2, speed);
-  setMotor(M2_IN1, M2_IN2, -speed);
-  setMotor(M3_IN1, M3_IN2, -speed);
-  setMotor(M4_IN1, M4_IN2, speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+
+  analogWrite(M1_IN1, speed);
+  analogWrite(M1_IN2, 0);
+
+  analogWrite(M2_IN1, 0);
+  analogWrite(M2_IN2, speed);
+
+  analogWrite(M3_IN1, 0);
+  analogWrite(M3_IN2, speed);
+
+  analogWrite(M4_IN1, speed);
+  analogWrite(M4_IN2, 0);
 }
 
 void moveClockw(int speed) { // หมุนตามเข็ม (ขวา)
-  setMotor(M1_IN1, M1_IN2, speed);
-  setMotor(M2_IN1, M2_IN2, -speed);
-  setMotor(M3_IN1, M3_IN2, speed);
-  setMotor(M4_IN1, M4_IN2, -speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+
+  analogWrite(M1_IN1, speed);
+  analogWrite(M1_IN2, 0);
+
+  analogWrite(M2_IN1, 0);
+  analogWrite(M2_IN2, speed);
+
+  analogWrite(M3_IN1, speed);
+  analogWrite(M3_IN2, 0);
+
+  analogWrite(M4_IN1, 0);
+  analogWrite(M4_IN2, speed);
 }
 
 void moveCClockw(int speed) { // หมุนทวนเข็ม (ซ้าย)
-  setMotor(M1_IN1, M1_IN2, -speed);
-  setMotor(M2_IN1, M2_IN2, speed);
-  setMotor(M3_IN1, M3_IN2, -speed);
-  setMotor(M4_IN1, M4_IN2, speed);
+  speed = abs(constrain(speed, 0, 100));
+  speed = map(speed, 20, 100, 0, 100);
+
+  analogWrite(M1_IN1, 0);
+  analogWrite(M1_IN2, speed);
+
+  analogWrite(M2_IN1, speed);
+  analogWrite(M2_IN2, 0);
+
+  analogWrite(M3_IN1, 0);
+  analogWrite(M3_IN2, speed);
+
+  analogWrite(M4_IN1, speed);
+  analogWrite(M4_IN2, 0);
 }
 
 void stopMotors() {
-  setMotor(M1_IN1, M1_IN2, 0);
-  setMotor(M2_IN1, M2_IN2, 0);
-  setMotor(M3_IN1, M3_IN2, 0);
-  setMotor(M4_IN1, M4_IN2, 0);
+
+  analogWrite(M1_IN1, 0);
+  analogWrite(M1_IN2, 0);
+
+  analogWrite(M2_IN1, 0);
+  analogWrite(M2_IN2, 0);
+
+  analogWrite(M3_IN1, 0);
+  analogWrite(M3_IN2, 0);
+
+  analogWrite(M4_IN1, 0);
+  analogWrite(M4_IN2, 0);
 }
 
 int readChannel(int channelInput, int minLimit, int maxLimit, int defaultValue) {
@@ -96,7 +144,6 @@ void setup() {
   pinMode(CH1, INPUT);
   pinMode(CH2, INPUT);
   pinMode(CH4, INPUT);
-  pinMode(CH6, INPUT);
 
   pinMode(M1_IN1, OUTPUT); pinMode(M1_IN2, OUTPUT);
   pinMode(M2_IN1, OUTPUT); pinMode(M2_IN2, OUTPUT);
@@ -108,30 +155,24 @@ void loop() {
   ch1Value = readChannel(CH1, -100, 100, 0);
   ch2Value = readChannel(CH2, -100, 100, 0);
   ch4Value = readChannel(CH4, -100, 100, 0);
-  ch6Value = readChannel(CH6, 0, 100, 0);
 
   // แปลงค่าที่ได้เป็นทิศทาง
   String direction = "Stop";
 
-  if (abs(ch1Value) < 15 && abs(ch2Value) < 15 && abs(ch4Value) < 15 && abs(ch6Value) <= 20){
-    direction = "Stop";
-  } else {
-    if (ch2Value > 20 && abs(ch6Value) >= 20){direction = "Forward"; moveForward(ch6Value);}
-    else if (ch2Value < -20 && abs(ch6Value) >= 20){direction = "Backward"; moveBackward(ch6Value);}
+  if (ch2Value > 20){direction = "Forward"; moveForward(ch2Value);}
+  else if (ch2Value < -20){direction = "Backward"; moveBackward(abs(ch2Value));}
 
-    if (ch1Value > 20 && abs(ch6Value) >= 20){direction = "Strafe Right"; moveRight(ch6Value);}
-    else if (ch1Value < -20 && abs(ch6Value) >= 20){direction = "Strafe Left"; moveLeft(ch6Value);}
+  else if (ch1Value > 20){direction = "Strafe Right"; moveRight(ch1Value);}
+  else if (ch1Value < -20){direction = "Strafe Left"; moveLeft(abs(ch1Value));}
 
-    if (ch4Value > 20 && abs(ch6Value) >= 20){direction = "Rotate Right"; moveClockw(ch6Value);}
-    else if (ch4Value < -20 && abs(ch6Value) >= 20){direction = "Rotate Left"; moveCClockw(ch6Value);}
-  }
+  else if (ch4Value > 20){direction = "Rotate Right"; moveClockw(ch4Value);}
+  else if (ch4Value < -20){direction = "Rotate Left"; moveCClockw(abs(ch4Value));}
+
+  else {direction = "Stop"; stopMotors();}
 
   Serial.print("X: "); Serial.print(ch1Value);
   Serial.print(" | Y: "); Serial.print(ch2Value);
   Serial.print(" | R: "); Serial.print(ch4Value);
   Serial.print(" --> ");
-  Serial.print(direction);
-  Serial.print(" | Speed: "); Serial.println(ch6Value);
-
-  delay(100);
+  Serial.println(direction);
 }
