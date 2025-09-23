@@ -3,8 +3,7 @@
 #define CH1 PB10   // สไลด์ ซ้าย-ขวา (X)
 #define CH2 PB3   // เดินหน้า-ถอยหลัง (Y)
 #define CH4 PC14   // หมุนตัว L R
-#define CH5 PA15   // สวิสต์ปั่น
-#define CH6 PB11   // Speed knob
+
 #define M1 2
 #define M2 4
 #define M3 1
@@ -13,11 +12,6 @@
 int ch1Value; 
 int ch2Value;
 int ch4Value;
-int ch6Value;
-
-// int mapSpeed(int speed) {
-//   return map(constrain(speed, 0, 100), 0, 100, 0, 255);
-// }
 
 void moveForward(int speed) { // เดินหน้า 
   speed = abs(constrain(speed, 0, 100));
@@ -99,7 +93,6 @@ void loop() {
   ch1Value = readChannel(CH1, -100, 100, 0);
   ch2Value = readChannel(CH2, -100, 100, 0);
   ch4Value = readChannel(CH4, -100, 100, 0);
-  ch6Value = readChannel(CH6, 0, 100, 0);
 
   // แปลงค่าที่ได้เป็นทิศทาง
   String direction = "Stop";
@@ -120,7 +113,5 @@ void loop() {
   Serial.print(" | R: "); Serial.print(ch4Value);
   Serial.print(" --> ");
   Serial.println(direction);
-  // Serial.print(" | Speed: "); Serial.println(ch6Value);
 
-  delay(100);
 }
