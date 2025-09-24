@@ -21,33 +21,12 @@ int ch2Value;
 int ch4Value;
 
 void moveForward(int speed) { // เดินหน้า
-  speed = abs(constrain(speed, 0, 100));
+  speed = constrain(speed, 0, 100);
   speed = map(speed, 20, 100, 0, 255);
 
   analogWrite(EN1, speed);
   digitalWrite(M1_IN1, HIGH);
   digitalWrite(M1_IN2, LOW);
-
-  analogWrite(EN2, speed);
-  digitalWrite(M2_IN1, HIGH);
-  digitalWrite(M2_IN2, LOW);
-
-  analogWrite(EN3, speed);
-  digitalWrite(M3_IN1, HIGH);
-  digitalWrite(M3_IN2, LOW);
-
-  analogWrite(EN4, speed);
-  digitalWrite(M4_IN1, HIGH);
-  digitalWrite(M4_IN2, LOW);
-}
-
-void moveBackward(int speed) { // ถอยหลัง
-  speed = abs(constrain(speed, 0, 100));
-  speed = map(speed, 20, 100, 0, 255);
-
-  analogWrite(EN1, speed);
-  digitalWrite(M1_IN1, LOW);
-  digitalWrite(M1_IN2, HIGH);
 
   analogWrite(EN2, speed);
   digitalWrite(M2_IN1, LOW);
@@ -62,8 +41,29 @@ void moveBackward(int speed) { // ถอยหลัง
   digitalWrite(M4_IN2, HIGH);
 }
 
+void moveBackward(int speed) { // ถอยหลัง
+  speed = constrain(speed, 0, 100);
+  speed = map(speed, 20, 100, 0, 255);
+
+  analogWrite(EN1, speed);
+  digitalWrite(M1_IN1, LOW);
+  digitalWrite(M1_IN2, HIGH);
+
+  analogWrite(EN2, speed);
+  digitalWrite(M2_IN1, HIGH);
+  digitalWrite(M2_IN2, LOW);
+
+  analogWrite(EN3, speed);
+  digitalWrite(M3_IN1, HIGH);
+  digitalWrite(M3_IN2, LOW);
+
+  analogWrite(EN4, speed);
+  digitalWrite(M4_IN1, HIGH);
+  digitalWrite(M4_IN2, LOW);
+}
+
 void moveLeft(int speed) { // สไลด์ซ้าย
-  speed = abs(constrain(speed, 0, 100));
+  speed = constrain(speed, 0, 100);
   speed = map(speed, 20, 100, 0, 255);
   
   analogWrite(EN1, speed);
@@ -71,27 +71,6 @@ void moveLeft(int speed) { // สไลด์ซ้าย
   digitalWrite(M1_IN2, HIGH);
 
   analogWrite(EN2, speed);
-  digitalWrite(M2_IN1, HIGH);
-  digitalWrite(M2_IN2, LOW);
-
-  analogWrite(EN3, speed);
-  digitalWrite(M3_IN1, HIGH);
-  digitalWrite(M3_IN2, LOW);
-
-  analogWrite(EN4, speed);
-  digitalWrite(M4_IN1, LOW);
-  digitalWrite(M4_IN2, HIGH);
-}
-
-void moveRight(int speed) { // สไลด์ขวา
-  speed = abs(constrain(speed, 0, 100));
-  speed = map(speed, 20, 100, 0, 255);
-
-  analogWrite(EN1, speed);
-  digitalWrite(M1_IN1, HIGH);
-  digitalWrite(M1_IN2, LOW);
-
-  analogWrite(EN2, speed);
   digitalWrite(M2_IN1, LOW);
   digitalWrite(M2_IN2, HIGH);
 
@@ -104,8 +83,8 @@ void moveRight(int speed) { // สไลด์ขวา
   digitalWrite(M4_IN2, LOW);
 }
 
-void moveClockw(int speed) { // หมุนตามเข็ม (ขวา)
-  speed = abs(constrain(speed, 0, 100));
+void moveRight(int speed) { // สไลด์ขวา
+  speed = constrain(speed, 0, 100);
   speed = map(speed, 20, 100, 0, 255);
 
   analogWrite(EN1, speed);
@@ -113,8 +92,8 @@ void moveClockw(int speed) { // หมุนตามเข็ม (ขวา)
   digitalWrite(M1_IN2, LOW);
 
   analogWrite(EN2, speed);
-  digitalWrite(M2_IN1, LOW);
-  digitalWrite(M2_IN2, HIGH);
+  digitalWrite(M2_IN1, HIGH);
+  digitalWrite(M2_IN2, LOW);
 
   analogWrite(EN3, speed);
   digitalWrite(M3_IN1, HIGH);
@@ -125,8 +104,29 @@ void moveClockw(int speed) { // หมุนตามเข็ม (ขวา)
   digitalWrite(M4_IN2, HIGH);
 }
 
+void moveClockw(int speed) { // หมุนตามเข็ม (ขวา)
+  speed = constrain(speed, 0, 100);
+  speed = map(speed, 20, 100, 0, 255);
+
+  analogWrite(EN1, speed);
+  digitalWrite(M1_IN1, HIGH);
+  digitalWrite(M1_IN2, LOW);
+
+  analogWrite(EN2, speed);
+  digitalWrite(M2_IN1, HIGH);
+  digitalWrite(M2_IN2, LOW);
+
+  analogWrite(EN3, speed);
+  digitalWrite(M3_IN1, LOW);
+  digitalWrite(M3_IN2, HIGH);
+
+  analogWrite(EN4, speed);
+  digitalWrite(M4_IN1, HIGH);
+  digitalWrite(M4_IN2, LOW);
+}
+
 void moveCClockw(int speed) { // หมุนทวนเข็ม (ซ้าย)
-  speed = abs(constrain(speed, 0, 100));
+  speed = constrain(speed, 0, 100);
   speed = map(speed, 20, 100, 0, 255);
 
   analogWrite(EN1, speed);
@@ -134,16 +134,16 @@ void moveCClockw(int speed) { // หมุนทวนเข็ม (ซ้าย
   digitalWrite(M1_IN2, HIGH);
 
   analogWrite(EN2, speed);
-  digitalWrite(M2_IN1, HIGH);
-  digitalWrite(M2_IN2, LOW);
+  digitalWrite(M2_IN1, LOW);
+  digitalWrite(M2_IN2, HIGH);
 
   analogWrite(EN3, speed);
-  digitalWrite(M3_IN1, LOW);
-  digitalWrite(M3_IN2, HIGH);
+  digitalWrite(M3_IN1, HIGH);
+  digitalWrite(M3_IN2, LOW);
 
   analogWrite(EN4, speed);
-  digitalWrite(M4_IN1, HIGH);
-  digitalWrite(M4_IN2, LOW);
+  digitalWrite(M4_IN1, LOW);
+  digitalWrite(M4_IN2, HIGH);
 }
 
 void stopMotors() {
@@ -170,8 +170,8 @@ void setup() {
   pinMode(M2_IN1, OUTPUT); pinMode(M2_IN2, OUTPUT);
   pinMode(M3_IN1, OUTPUT); pinMode(M3_IN2, OUTPUT);
   pinMode(M4_IN1, OUTPUT); pinMode(M4_IN2, OUTPUT);
-  pinMode(EN1, INPUT); pinMode(EN2, INPUT); 
-  pinMode(EN3, INPUT); pinMode(EN4, INPUT); 
+  pinMode(EN1, OUTPUT); pinMode(EN2, OUTPUT); 
+  pinMode(EN3, OUTPUT); pinMode(EN4, OUTPUT); 
 }
 
 void loop() {
@@ -182,13 +182,13 @@ void loop() {
   // แปลงค่าที่ได้เป็นทิศทาง
   String direction = "Stop";
 
-  if (ch2Value > 20){direction = "Forward"; moveForward(ch2Value);}
+  if (ch2Value > 20){direction = "Forward"; moveForward(abs(ch2Value));}
   else if (ch2Value < -20){direction = "Backward"; moveBackward(abs(ch2Value));}
 
-  else if (ch1Value > 20){direction = "Strafe Right"; moveRight(ch1Value);}
+  else if (ch1Value > 20){direction = "Strafe Right"; moveRight(abs(ch1Value));}
   else if (ch1Value < -20){direction = "Strafe Left"; moveLeft(abs(ch1Value));}
 
-  else if (ch4Value > 20){direction = "Rotate Right"; moveClockw(ch4Value);}
+  else if (ch4Value > 20){direction = "Rotate Right"; moveClockw(abs(ch4Value));}
   else if (ch4Value < -20){direction = "Rotate Left"; moveCClockw(abs(ch4Value));}
 
   else {direction = "Stop"; stopMotors();}
